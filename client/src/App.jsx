@@ -16,89 +16,23 @@ import ShoppingCheckout from './page/shopping-view/Checkout'
 import ShoppingAccount from './page/shopping-view/Account'
 import CheckAuth from './components/common/Check-auth'
 import UnAuthPage from './page/unauth-page'
+import { useSelector } from 'react-redux'
 
 
 
 
 function App() {
-
-  const isAuthenicated=false;
-  const user=null;
-
-//   const router = createBrowserRouter([
-//     {
-//       path:'/',
-//       element:<CheckAuth isAuthenicated={isAuthenicated} user={user}></CheckAuth>
-//     },
-//   {
-//     path: '/auth',
-//     element: <CheckAuth isAuthenicated={isAuthenicated} user={user}><Layout /></CheckAuth>,
-//     children: [
-//       {
-//         path: '/auth/login',
-//         element: <Login />
-//       },
-//       {
-//         path: '/auth/signup',
-//         element: <Signup />
-//       }
-//     ]
-//   },
-//   {
-//     path: '/admin',
-//     element: <CheckAuth isAuthenicated={isAuthenicated} user={user}><AdminLayout /></CheckAuth>,
-//     children: [
-//       {
-//         path: '/admin/dashboard',
-//         element: <AdminDashboard />
-//       },
-//       {
-//         path: '/admin/products',
-//         element: <AdminProduct />
-//       },
-//       {
-//         path: '/admin/features',
-//         element: <AdminFeature />
-//       },
-//       {
-//         path: '/admin/orders',
-//         element: <AdminOrder />
-//       }
-//     ]
-//   },
-//   {
-//     path: '/shop',
-//     element: <CheckAuth isAuthenicated={isAuthenicated} user={user}><ShoppingLayout /></CheckAuth>,
-//     children: [
-//       {
-//         path: '/shop/home',
-//         element:<ShoppingHome/>
-//       },
-//       {
-//         path:'/shop/listing',
-//         element:<ShoppingListing/>
-//       },
-//       {
-//         path:'/shop/checkout',
-//         element:<ShoppingCheckout/>
-//       },
-//       {
-//         path:'/shop/account',
-//         element:<ShoppingAccount/>
-//       }
-//     ]
-//   },
-//   {
-//     path: "*",
-//     element: <NotFound />
-//   }
-// ])
+  const {isAuthenicated,user}=useSelector(state=>state.auth)
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Navigate to={isAuthenicated ? (user.role === 'admin' ? '/admin/dashboard' : '/shop/home') : '/auth/login'} />
-  },
+ {
+  path: '/',
+  element: (
+    <Navigate to={isAuthenicated && user ? (user.role === 'admin' ? '/admin/dashboard' : '/shop/home') : '/auth/login'
+   } 
+    />
+  )
+},
   {
     path: '/auth',
     element: <CheckAuth isAuthenticated={isAuthenicated} user={user}><Layout /></CheckAuth>,

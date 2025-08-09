@@ -12,7 +12,7 @@ const CommonForm = ({ formControl,formData,setFormData,onSubmit, buttonText}) =>
         const value = formData[getControlItem.name] || "";
         switch (getControlItem.ComponentType) {
             case 'input':
-                element = (<Input name={getControlItem.name} onChange={e=>setFormData({...formData,[getControlItem.name]:e.target.value})} placeholder={getControlItem.placeholder} id={getControlItem.name} type={getControlItem.type} />);
+                element = (<Input name={getControlItem.name} onChange={e=>setFormData({...formData,[getControlItem.name]:e.target.value})} value={value} placeholder={getControlItem.placeholder} id={getControlItem.name} type={getControlItem.type} />);
                 break;
 
             case 'select':
