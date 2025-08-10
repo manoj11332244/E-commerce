@@ -54,3 +54,28 @@ export const loginUser = async (req, res) => {
         })
     }
 }
+
+export const logout=async(req,res)=>{
+    res.clearCookie('token').json({
+        success:true,
+        message:"Logout successfully!!"
+    })
+}
+
+// middleware auth
+
+export const authMiddleware=async(req,res,next)=>{
+    const {token}=req.cookies;
+    if(!token) return res.status(401).json({success:false,message:"Unauthorised user"})
+        try {
+            const decoded=await jwt.verify(token,'CLIENT_SECRET_KEY')
+            req.user=decoded;
+            next();
+        } catch (error) {
+        console.log(error)
+        res.status(401).json({
+            success: false,
+            message: 'Some error occured'
+        })
+        }
+}

@@ -1,11 +1,20 @@
 import express from 'express'
-import { loginUser, register } from '../../controllers/auth/auth-controllers.js'
+import { authMiddleware, loginUser, logout, register } from '../../controllers/auth/auth-controllers.js'
 
 const router=express.Router()
 
 
 router.post('/signup',register)
 router.post('/login',loginUser)
+router.post('/logout',logout)
+router.get('/check-auth',authMiddleware,(req,res)=>{
+    const user=req.user
+    res.status(200).json({
+        success:true,
+        message:"Authenticated User!!",
+        user
+    })
+})
 
 
 export default router

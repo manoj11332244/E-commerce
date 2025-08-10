@@ -16,19 +16,29 @@ import ShoppingCheckout from './page/shopping-view/Checkout'
 import ShoppingAccount from './page/shopping-view/Account'
 import CheckAuth from './components/common/Check-auth'
 import UnAuthPage from './page/unauth-page'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { checkAuth } from './store/auth-slice'
+import { Skeleton } from './components/ui/skeleton'
 
 
 
 
 function App() {
-  const {isAuthenicated,user}=useSelector(state=>state.auth)
+  const {user,isAuthenicated,isLoading}=useSelector(state=>state.auth)
+  const dispatch=useDispatch()
+
+  useEffect(
+    ()=>{
+    dispatch(checkAuth())
+    },[dispatch]
+  )
 
 const router = createBrowserRouter([
  {
   path: '/',
   element: (
-    <Navigate to={isAuthenicated && user ? (user.role === 'admin' ? '/admin/dashboard' : '/shop/home') : '/auth/login'
+    <Navigate to={isAuthenicated && user ? (user.role === "admin" ? '/admin/dashboard' : '/shop/home') : '/auth/login'
    } 
     />
   )
@@ -70,7 +80,9 @@ const router = createBrowserRouter([
   }
 ]);
 
-
+if(isLoading){
+  return <Skeleton className="w-[800px] bg-black h-[600px]" />
+}
   return (
     <div className='bg-white flex flex-col overflow-hidden'>
       <RouterProvider router={router} />
