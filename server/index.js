@@ -5,6 +5,7 @@ import cors from 'cors'
 import connectDB from './db/db.js'
 
 import AuthRoute from './routes/auth/auth-routes.js'
+import adminProductRoute from './routes/admin/product-routes.js'
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(cors({
 
 
 app.use('/api/auth',AuthRoute)
+app.use('/api/admin/products',adminProductRoute)
 
 app.listen(PORT,()=>{
     console.log(`This Server PORT : ${PORT}`)
