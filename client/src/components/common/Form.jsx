@@ -2,7 +2,7 @@ import React from 'react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
-import { Select, SelectTrigger, SelectValue,SelectItem } from '../ui/select';
+import { Select, SelectTrigger, SelectValue,SelectItem ,SelectContent} from '../ui/select';
 import { Button } from '../ui/button';
 
 const CommonForm = ({ formControl,formData,setFormData,onSubmit, buttonText}) => {
