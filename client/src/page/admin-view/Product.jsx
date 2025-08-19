@@ -2,8 +2,10 @@ import CommonForm from '@/components/common/Form';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { addProductFormElement } from '../../../config';
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import ProductImageUpload from '@/components/admin-view/image-upload';
+import { useDispatch, useSelector } from 'react-redux';
+import { addnewProduct, fetchAllProduct } from '@/store/admin/product-slice';
 
 const initialFormData={
   image:null,
@@ -23,10 +25,23 @@ const  AdminProduct = () => {
   const [imageFile,setImageFile]=useState(null)
   const [uploadedImageUrl,setUploadedImageUrl]=useState('')
   const [imageLoadingState,setImageLoadingState]=useState(false)
+  const {productList}=useSelector(store=>store.adminProducts)
+  const dispatch=useDispatch()
 
-  const onSubmit=()=>{
-    console.log(formData)
+  const onSubmit=(e)=>{
+    // console.log(formData)
+    e.preventDefault();
+    dispatch(addnewProduct({...formData,image:uploadedImageUrl})).then((data)=>{
+      console.log(data)
+    })
   }
+
+  useEffect(()=>{
+    dispatch(fetchAllProduct())
+  },[dispatch])
+
+  // just check product
+
   return (
     <Fragment>
       <div className='mb-5 w-full flex justify-end'>

@@ -51,7 +51,7 @@ export const addProductFormElement = [
     },
     {
         label: "Description",
-        name: "discription",
+        name: "description",
         ComponentType: "textarea",
         placeholder: "Enter product description"
     },
@@ -81,23 +81,23 @@ export const addProductFormElement = [
         ]
     },
     {
-        label:"Price",
-        name:"price",
-        type:"number",
-        placeholder:"Enter product price"
+        label: "Price",
+        name: "price",
+        type: "number",
+        placeholder: "Enter product price"
     },
     {
-        label:"Sale Price",
-        name:"salePirce",
-        ComponentType:"input",
-        type:"number",
-        placeholder:"Enter sale price (optional)"
+        label: "Sale Price",
+        name: "salePrice",
+        ComponentType: "input",
+        type: "number",
+        placeholder: "Enter sale price (optional)"
     },
-     {
-    label: "Total Stock",
-    name: "totalStock",
-    componentType: "input",
-    type: "number",
-    placeholder: "Enter total stock",
-  },
+    {
+        label: "Total Stock",
+        name: "totalStock",
+        componentType: "input",
+        type: "number",
+        placeholder: "Enter total stock",
+    },
 ]
