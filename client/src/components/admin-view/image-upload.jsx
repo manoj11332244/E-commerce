@@ -37,7 +37,7 @@ const ProductImageUpload = ({ imageFile, setImageFile, uploadedImageUrl, setUplo
         data.append('my_file', imageFile)
         const response = await axios.post('http://localhost:8000/api/admin/products/upload-image', data)
         console.log(response)
-        if (response?.data?.sucess) {
+        if (response?.data?.success) {
             setUploadedImageUrl(response.data?.result?.url)
             setImageLoadingState(false)
         }
