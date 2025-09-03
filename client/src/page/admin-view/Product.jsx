@@ -6,63 +6,78 @@ import React, { Fragment, useEffect, useState } from 'react'
 import ProductImageUpload from '@/components/admin-view/image-upload';
 import { useDispatch, useSelector } from 'react-redux';
 import { addnewProduct, fetchAllProduct } from '@/store/admin/product-slice';
+import { useToast } from '@/hooks/use-toast';
+import AdminProductTile from '@/components/admin-view/Product-tile';
 
-const initialFormData={
-  image:null,
-  title:"",
-  description:"",
-  category:"",
-  brand:"",
-  price:"",
-  salesPrice:"",
-  totalStock:"",
+const initialFormData = {
+  image: null,
+  title: "",
+  description: "",
+  category: "",
+  brand: "",
+  price: "",
+  salesPrice: "",
+  totalStock: "",
   // averageReview:""
 }
 
-const  AdminProduct = () => {
-  const [openCreateProductDialog,setOpenCreateProductDialog]=useState(false)
-  const [formData,setFormData]=useState(initialFormData)
-  const [imageFile,setImageFile]=useState(null)
-  const [uploadedImageUrl,setUploadedImageUrl]=useState('')
-  const [imageLoadingState,setImageLoadingState]=useState(false)
-  const {productList}=useSelector(store=>store.adminProducts)
-  const dispatch=useDispatch()
+const AdminProduct = () => {
+  const [openCreateProductDialog, setOpenCreateProductDialog] = useState(false)
+  const [formData, setFormData] = useState(initialFormData)
+  const [imageFile, setImageFile] = useState(null)
+  const [uploadedImageUrl, setUploadedImageUrl] = useState('')
+  const [imageLoadingState, setImageLoadingState] = useState(false)
+  const { productList } = useSelector(store => store.adminProducts)
+  const dispatch = useDispatch()
+  const { toast } = useToast()
 
-  const onSubmit=(e)=>{
+  const onSubmit = (e) => {
     // console.log(formData)
     e.preventDefault();
-    dispatch(addnewProduct({...formData,image:uploadedImageUrl})).then((data)=>{
+    dispatch(addnewProduct({ ...formData, image: uploadedImageUrl })).then((data) => {
       console.log(data)
+      if (data?.payload?.success) {
+        dispatch(fetchAllProduct())
+        setOpenCreateProductDialog(false)
+        setImageFile(null)
+        setFormData(initialFormData)
+        toast({
+          title: "Product added successfully"
+        })
+      }
     })
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(fetchAllProduct())
-  },[dispatch])
+  }, [dispatch])
 
-  // just check product
 
   return (
     <Fragment>
       <div className='mb-5 w-full flex justify-end'>
-        <Button onClick={()=>setOpenCreateProductDialog(!openCreateProductDialog)}>Add New Product</Button>
+        <Button onClick={() => setOpenCreateProductDialog(!openCreateProductDialog)}>Add New Product</Button>
       </div>
       {/* product list */}
-      <div className='gird gap-4 md:grid-cols-3 lg:grid-cols-4'>
-        <Sheet open={openCreateProductDialog} onOpenChange={()=>setOpenCreateProductDialog(!openCreateProductDialog)}>
-          <SheetContent side="right" className="overflow-auto">
-            <SheetHeader>
-              <SheetTitle>Add New Product</SheetTitle>
-            </SheetHeader>
-            <ProductImageUpload imageFile={imageFile} setImageFile={setImageFile} uploadedImageUrl={uploadedImageUrl} setUploadedImageUrl={setUploadedImageUrl} imageLoadingState={imageLoadingState} setImageLoadingState={setImageLoadingState}/>
-            <div className='py-6'>
-              <CommonForm formControl={addProductFormElement} formData={formData} setFormData={setFormData} buttonText={"Add Product"} onSubmit={onSubmit}/>
-            </div>
-          </SheetContent>
-        </Sheet>
+      <div className='grid gap-4 md:grid-cols-3 lg:grid-cols-4'>
+        {
+          productList && productList.length > 0 ?
+            productList.map(productItem => <AdminProductTile product={productItem} />) : null
+        }
       </div>
+      <Sheet open={openCreateProductDialog} onOpenChange={() => setOpenCreateProductDialog(!openCreateProductDialog)}>
+        <SheetContent side="right" className="overflow-auto">
+          <SheetHeader>
+            <SheetTitle>Add New Product</SheetTitle>
+          </SheetHeader>
+          <ProductImageUpload imageFile={imageFile} setImageFile={setImageFile} uploadedImageUrl={uploadedImageUrl} setUploadedImageUrl={setUploadedImageUrl} imageLoadingState={imageLoadingState} setImageLoadingState={setImageLoadingState} />
+          <div className='py-6'>
+            <CommonForm formControl={addProductFormElement} formData={formData} setFormData={setFormData} buttonText={"Add Product"} onSubmit={onSubmit} />
+          </div>
+        </SheetContent>
+      </Sheet>
     </Fragment>
   )
 }
 
-export default  AdminProduct;
+export default AdminProduct;

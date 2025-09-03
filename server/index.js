@@ -7,7 +7,7 @@ import connectDB from './db/db.js'
 import AuthRoute from './routes/auth/auth-routes.js'
 import adminProductRoute from './routes/admin/product-routes.js'
 
-dotenv.config();
+dotenv.config({});
 
 const app=express()
 const PORT=process.env.PORT || 4000
