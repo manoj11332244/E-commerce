@@ -62,7 +62,7 @@ export const editProduct = async (req, res) => {
     try {
         const { id } = req.params
         const { image, title, description, category, brand, price, salePrice, totalStock } = req.body
-        const findProduct = await Product.findById({ id })
+        const findProduct = await Product.findById(id)
         if (!findProduct) return res.status(404).json({ success: false, message: "Product Not Found" })
         Product.title = title || findProduct.title
         Product.description = description || findProduct.description
