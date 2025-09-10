@@ -2,8 +2,8 @@ import React from 'react'
 import { Card, CardContent, CardFooter } from '../ui/card'
 import { Button } from '../ui/button'
 
-const AdminProductTile = ({product,setFormData,setOpenCreateProductDialog,setCurrenEditedId}) => {
-    console.log(product)
+const AdminProductTile = ({product,setFormData,setOpenCreateProductDialog,setCurrenEditedId, handleDelete}) => {
+    // console.log(product)
   return (
     <Card className='w-full max-w-sm mx-auto'>
         <div>
@@ -26,7 +26,7 @@ const AdminProductTile = ({product,setFormData,setOpenCreateProductDialog,setCur
                     setCurrenEditedId(product?._id)
                     setFormData(product)
                 }}>Edit</Button>
-                <Button>Delete</Button>
+                <Button onClick={()=>{handleDelete(product?._id)}}>Delete</Button>
             </CardFooter>
         </div>
     </Card>

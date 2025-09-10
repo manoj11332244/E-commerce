@@ -5,7 +5,7 @@ import { addProductFormElement } from '../../../config';
 import React, { Fragment, useEffect, useState } from 'react'
 import ProductImageUpload from '@/components/admin-view/image-upload';
 import { useDispatch, useSelector } from 'react-redux';
-import { addnewProduct, editProduct, fetchAllProduct } from '@/store/admin/product-slice';
+import { addnewProduct, deleteProduct, editProduct, fetchAllProduct } from '@/store/admin/product-slice';
 import { useToast } from '@/hooks/use-toast';
 import AdminProductTile from '@/components/admin-view/Product-tile';
 
@@ -36,12 +36,15 @@ const AdminProduct = () => {
     // console.log(formData)
     e.preventDefault();
     currenEditedId !== null ? dispatch(editProduct({ id: currenEditedId, formData })).then((data) =>{
-      console.log(data, 'edit')
-      if(data?.payload?.sucess){
-        dispatch(editProduct())
+      // console.log(data, 'edit')
+      if(data?.payload?.success){
+        dispatch(fetchAllProduct())
         setCurrenEditedId(null)
-        setFormData(initialFormData)
         setOpenCreateProductDialog(false)
+        setFormData(initialFormData)
+        toast({
+            title: "Product updated successfully"
+          })
       }
     }
   )
@@ -59,6 +62,21 @@ const AdminProduct = () => {
       })
   }
 
+  function isFormValid(){
+    return Object.keys(formData).map(item=>formData[item]!='').every((items)=>items)
+  }
+
+  function handleDelete(getCurrentProductId){
+    dispatch(deleteProduct(getCurrentProductId)).then((data)=>{
+      if(data?.payload?.success){
+        dispatch(fetchAllProduct());
+         toast({
+            title: "Product Delete successfully"
+          })
+      }
+    })
+  }
+
   useEffect(() => {
     dispatch(fetchAllProduct())
   }, [dispatch])
@@ -73,7 +91,7 @@ const AdminProduct = () => {
       <div className='grid gap-4 md:grid-cols-3 lg:grid-cols-4'>
         {
           productList && productList.length > 0 ?
-            productList.map(productItem => <AdminProductTile setFormData={setFormData} setOpenCreateProductDialog={setOpenCreateProductDialog} setCurrenEditedId={setCurrenEditedId} product={productItem} />) : null
+            productList.map(productItem => <AdminProductTile setFormData={setFormData} setOpenCreateProductDialog={setOpenCreateProductDialog} setCurrenEditedId={setCurrenEditedId} product={productItem} handleDelete={handleDelete} />) : null
         }
       </div>
       <Sheet open={openCreateProductDialog} onOpenChange={() => {
@@ -87,7 +105,7 @@ const AdminProduct = () => {
           </SheetHeader>
           <ProductImageUpload imageFile={imageFile} setImageFile={setImageFile} uploadedImageUrl={uploadedImageUrl} setUploadedImageUrl={setUploadedImageUrl} imageLoadingState={imageLoadingState} setImageLoadingState={setImageLoadingState} isEditMode={currenEditedId !== null} />
           <div className='py-6'>
-            <CommonForm formControl={addProductFormElement} formData={formData} setFormData={setFormData} buttonText={currenEditedId != null ? 'Edit' : "Add Product"} onSubmit={onSubmit} />
+            <CommonForm formControl={addProductFormElement} isBtnDisabled={!isFormValid()} formData={formData} setFormData={setFormData} buttonText={currenEditedId != null ? 'Edit' : "Add Product"} onSubmit={onSubmit} />
           </div>
         </SheetContent>
       </Sheet>
