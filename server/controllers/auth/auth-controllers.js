@@ -36,14 +36,15 @@ export const loginUser = async (req, res) => {
         if (!checkPassword) {
             res.json({ sucess: false, message: "Incorrect Password! Please try again" })
         }
-        const token =await jwt.sign({ id: checkUser._id, role: checkUser.role, email: checkUser.email }, "CLIENT_SECRET_KEY", { expiresIn: '60m' })
+        const token =await jwt.sign({ id: checkUser._id, role: checkUser.role, email: checkUser.email, userName:checkUser.userName }, "CLIENT_SECRET_KEY", { expiresIn: '60m' })
         res.cookie('token', token, { httpOnly: true, secure: false }).json({
             success: true,
             message: "Login in successfully",
             user: {
                 email: checkUser.email,
                 role: checkUser.role,
-                id: checkUser._id
+                id: checkUser._id,
+                userName: checkUser.userName
             }
         })
     } catch (error) {
