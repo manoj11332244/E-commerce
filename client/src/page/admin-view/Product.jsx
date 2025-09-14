@@ -63,7 +63,7 @@ const AdminProduct = () => {
   }
 
   function isFormValid(){
-    return Object.keys(formData).map(item=>formData[item]!='').every((items)=>items)
+    return Object.keys(formData).map(item=>formData[item]!=' ').every((items)=>items)
   }
 
   function handleDelete(getCurrentProductId){
@@ -105,7 +105,7 @@ const AdminProduct = () => {
           </SheetHeader>
           <ProductImageUpload imageFile={imageFile} setImageFile={setImageFile} uploadedImageUrl={uploadedImageUrl} setUploadedImageUrl={setUploadedImageUrl} imageLoadingState={imageLoadingState} setImageLoadingState={setImageLoadingState} isEditMode={currenEditedId !== null} />
           <div className='py-6'>
-            <CommonForm formControl={addProductFormElement} isBtnDisabled={!isFormValid()} formData={formData} setFormData={setFormData} buttonText={currenEditedId != null ? 'Edit' : "Add Product"} onSubmit={onSubmit} />
+            <CommonForm isvalid={isFormValid} formControl={addProductFormElement} isBtnDisabled={!isFormValid()} formData={formData} setFormData={setFormData} buttonText={currenEditedId != null ? 'Edit' : "Add Product"} onSubmit={onSubmit} />
           </div>
         </SheetContent>
       </Sheet>
