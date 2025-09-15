@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProductFilter from './Filter'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
@@ -11,6 +11,13 @@ import ShoppingProductTitle from './Product-tile'
 const ShoppingListing = () => {
   const dispatch = useDispatch()
   const {productList} = useSelector((state) => state.shopProducts)
+  const [filters,setFilters]=useState(null)
+  const [sort,setSort]=useState(null)
+
+
+  function handleSort(value){
+    console.log(value)
+  }
 
   // console.log(productList)
   // fetch list of product
@@ -22,10 +29,10 @@ const ShoppingListing = () => {
     <div className='grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6'>
       <ProductFilter />
       <div className='bg-background w-full rounded-lg shadow-sm'>
-        <div className='p-4 border-b flex items-center justify-between'>
+        <div className='px-4 py-3 border-b flex items-center justify-between'>
           <h2 className='text-lg font-extrabold mr-2'>All Products</h2>
           <div className='flex items-center gap-3'>
-            <span className='text-muted-foreground'>10 Products</span>
+            <span className='text-muted-foreground'>{productList?.length >0 ? productList.length : 0} Products</span>
             {/* this part for sorting */}
             <div>
               <DropdownMenu>
@@ -36,10 +43,10 @@ const ShoppingListing = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end' className='w-[200px]'>
-                  <DropdownMenuRadioGroup>
+                  <DropdownMenuRadioGroup  onValueChange={handleSort}>
                     {
                       sortOptions.map((items) => {
-                        return <DropdownMenuRadioItem key={items.id}>
+                        return <DropdownMenuRadioItem  key={items.id} value={items.id}>
                           {items.label}
                         </DropdownMenuRadioItem>
                       })
@@ -51,9 +58,9 @@ const ShoppingListing = () => {
           </div>
         </div>
         {/*  */}
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
           {
-            productList && productList > 0 ? productList.map((items) => <ShoppingProductTitle product={items} />) : null
+           productList && productList.length > 0 ? productList.map((items)=> <ShoppingProductTitle product={items} />) : null
           }
         </div>
       </div>
