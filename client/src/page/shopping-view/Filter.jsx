@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 
-const ProductFilter = () => {
+const ProductFilter = ({filters,handleFilter}) => {
   return (
     <div className='bg-background rounded-lg shadow-sm'>
         <div className='p-4 border-b'>
@@ -21,7 +21,12 @@ const ProductFilter = () => {
                             {
                                 filterOptions[items].map(option=>{
                                    return <Label className='flex items-center gap-2 font-medium'>
-                                        <Checkbox />
+                                        <Checkbox checked={
+                                            filters && Object.keys(filters).length > 0 &&
+                                            filters[items] && filters[items].indexOf(option.id)>-1
+
+                                        }
+                                         onCheckedChange={()=>{handleFilter(items,option.id)}} />
                                         {option.label}
                                     </Label>
                                 })
