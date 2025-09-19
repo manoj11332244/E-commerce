@@ -5,23 +5,32 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpDownIcon } from 'lucide-react'
 import { sortOptions } from '../../../config/index'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAllFilteredProduct } from '@/store/shop/product-slice'
+import { fetchAllFilteredProduct, fetchProductDetails } from '@/store/shop/product-slice'
 import ShoppingProductTitle from './Product-tile'
 import { useSearchParams } from 'react-router-dom'
+import ProductDetailsDailog from '@/components/shopping-view/Product-Details'
 
 const ShoppingListing = () => {
   const dispatch = useDispatch()
-  const { productList } = useSelector((state) => state.shopProducts)
+  const { productList, productDetails } = useSelector((state) => state.shopProducts)
   const [filters, setFilters] = useState({})
   const [sort, setSort] = useState(null)
   const [searchParams, setSearchParams] = useSearchParams()
+  const [openDetailsDailog,setOpenDetailsDailog]=useState(false)
 
+
+// description of product by click popup
+ function handleGetProductDetails(getCurrentProductId){
+  // console.log(getCurrentProductId)
+  dispatch(fetchProductDetails(getCurrentProductId))
+ }
 
   function handleSort(value) {
     // console.log(value)
     setSort(value)
   }
 
+  // link query creating
   function createSearchParamsHelper(filterParams) {
     const queryParams = [];
     for (const [key, value] of Object.entries(filterParams)) {
@@ -57,6 +66,13 @@ const ShoppingListing = () => {
   }, [])
 
 
+  // dailogbox open for productDetails
+
+  useEffect(()=>{
+    if(productDetails!==null) setOpenDetailsDailog(true)
+  },[productDetails])
+
+
   // for  https:abc.com/cat="abc" like this for
   useEffect(() => {
     if (filters && Object.keys(filters).length > 0) {
@@ -73,6 +89,8 @@ const ShoppingListing = () => {
       dispatch(fetchAllFilteredProduct({ filterParams: filters, sortParams: sort }))
     }
   }, [dispatch, sort, filters])
+
+  // console.log(productDetails)
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6'>
@@ -109,10 +127,11 @@ const ShoppingListing = () => {
         {/*  */}
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
           {
-            productList && productList.length > 0 ? productList.map((items) => <ShoppingProductTitle product={items} />) : null
+            productList && productList.length > 0 ? productList.map((items) => <ShoppingProductTitle product={items} handleGetProductDetails={handleGetProductDetails} />) : null
           }
         </div>
       </div>
+      <ProductDetailsDailog open={openDetailsDailog} setOpen={setOpenDetailsDailog} productDetails={productDetails}  />
     </div>
   )
 }
