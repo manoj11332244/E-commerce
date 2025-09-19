@@ -17,9 +17,9 @@ const Login = () => {
   const {toast} = useToast()
 
   const onSubmit=()=>{
-    console.log(formData)
+    // console.log(formData)
     dispatch(loginUser(formData)).then((data)=>{
-      console.log(data)
+      // console.log(data)
       if(data?.payload?.success){
         toast({
           title:data?.payload?.message
