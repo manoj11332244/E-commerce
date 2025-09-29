@@ -1,5 +1,5 @@
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import { Button } from '../ui/button'
@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuArrow } from '@radix-ui/react-dropdown-menu'
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '../ui/avatar'
 import { logoutUser } from '@/store/auth-slice'
+import UserCartWrapper from './cart-wrapper'
 
 
 
@@ -28,6 +29,7 @@ function MenuItems() {
 
 function HeaderRightContent() {
   const { user } = useSelector(state => state.auth)
+  const [openCartSheet,setOpenCartSheet]=useState(false);
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -37,10 +39,15 @@ function HeaderRightContent() {
 
   // console.log(user)
   return <div className='flex lg:items-center lg:flex-row flex-col gap-4'>
-    <Button size='icons' variant={'outline'}>
-      <ShoppingCart className='h-12 w-12' />
-      <span className='sr-only'>User cart</span>
-    </Button>
+    {/* user cart added by sheet */}
+    <Sheet open={openCartSheet} onOpenChange={()=>{setOpenCartSheet(false)}}>
+      <Button onClick={()=>{setOpenCartSheet(true)}} size='icons' variant={'outline'}>
+        <ShoppingCart className='h-12 w-12' />
+        <span className='sr-only'>User cart</span>
+      </Button>
+      <UserCartWrapper />
+    </Sheet>
+    {/* user popup example your account type */}
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className='bg-black'>

@@ -7,6 +7,7 @@ import connectDB from './db/db.js'
 import AuthRoute from './routes/auth/auth-routes.js'
 import adminProductRoute from './routes/admin/product-routes.js'
 import shopProductRoute from './routes/shop/products-routes.js'
+import cartProductRoute from './routes/shop/cart.routes.js'
 
 dotenv.config({});
 
@@ -29,6 +30,7 @@ app.use(cors({
 app.use('/api/auth',AuthRoute)
 app.use('/api/admin/products',adminProductRoute)
 app.use('/api/shop/products',shopProductRoute)
+app.use('/api/shop/cart',cartProductRoute)
 
 app.listen(PORT,()=>{
     console.log(`This Server PORT : ${PORT}`)

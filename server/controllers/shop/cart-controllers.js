@@ -3,7 +3,7 @@ import { Product } from "../../models/Product.js"
 
 
 
-const addToCart=async(req,res)=>{
+export const addToCart=async(req,res)=>{
     try {
         const {userId,productId,quantity}=req.body;
         if(!userId || !productId || quantity<=0){
@@ -46,7 +46,7 @@ const addToCart=async(req,res)=>{
     }
 }
 
-const fetchCartItem=async(req,res)=>{
+export const fetchCartItem=async(req,res)=>{
     try {
         const {userId}=req.params;
         if(!userId){
@@ -94,7 +94,7 @@ const fetchCartItem=async(req,res)=>{
     }
 }
 
-const updateCartItemQty=async(req,res)=>{
+export const updateCartItemQty=async(req,res)=>{
     try {
        const {userId,productId,quantity}=req.body; 
        if(!userId || !productId || !quantity<=0){
@@ -151,7 +151,7 @@ const updateCartItemQty=async(req,res)=>{
     }
 }
 
-const deleteCart=async(req,res)=>{
+export const deleteCart=async(req,res)=>{
     try {
         const {userId,productId}=req.params
         if(!userId || !productId){
