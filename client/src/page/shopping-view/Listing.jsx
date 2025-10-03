@@ -9,21 +9,23 @@ import { fetchAllFilteredProduct, fetchProductDetails } from '@/store/shop/produ
 import ShoppingProductTitle from './Product-tile'
 import { useSearchParams } from 'react-router-dom'
 import ProductDetailsDailog from '@/components/shopping-view/Product-Details'
+import { addToCart, fetchCartItem } from '@/store/shop/cartSlice'
 
 const ShoppingListing = () => {
   const dispatch = useDispatch()
   const { productList, productDetails } = useSelector((state) => state.shopProducts)
+  const { user } = useSelector((state) => state.auth)
   const [filters, setFilters] = useState({})
   const [sort, setSort] = useState(null)
   const [searchParams, setSearchParams] = useSearchParams()
-  const [openDetailsDailog,setOpenDetailsDailog]=useState(false)
+  const [openDetailsDailog, setOpenDetailsDailog] = useState(false)
 
 
-// description of product by click popup
- function handleGetProductDetails(getCurrentProductId){
-  // console.log(getCurrentProductId)
-  dispatch(fetchProductDetails(getCurrentProductId))
- }
+  // description of product by click popup
+  function handleGetProductDetails(getCurrentProductId) {
+    // console.log(getCurrentProductId)
+    dispatch(fetchProductDetails(getCurrentProductId))
+  }
 
   function handleSort(value) {
     // console.log(value)
@@ -36,7 +38,7 @@ const ShoppingListing = () => {
     for (const [key, value] of Object.entries(filterParams)) {
       if (Array.isArray(value) && value.length > 0) {
         const paramValue = value.join(',')
-        let key1=key.toLowerCase()
+        let key1 = key.toLowerCase()
         queryParams.push(`${key1}=${encodeURIComponent(paramValue)}`)
       }
     }
@@ -60,6 +62,17 @@ const ShoppingListing = () => {
     // console.log(cpyFilters)
   }
 
+  // add to cart product
+  function handleAddToCart(getCurrentProductId) {
+    // console.log(getCurrentProductId)
+    dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 })).then((data) => {
+      // console.log(data)
+      if (data?.payload?.success) {
+        dispatch(fetchCartItem({ userId: user?.id }))
+      }
+    })
+  }
+
   useEffect(() => {
     setSort('price-lowtohigh')
     setFilters(JSON.parse(sessionStorage.getItem('filterData')) || {})
@@ -68,9 +81,9 @@ const ShoppingListing = () => {
 
   // dailogbox open for productDetails
 
-  useEffect(()=>{
-    if(productDetails!==null) setOpenDetailsDailog(true)
-  },[productDetails])
+  useEffect(() => {
+    if (productDetails !== null) setOpenDetailsDailog(true)
+  }, [productDetails])
 
 
   // for  https:abc.com/cat="abc" like this for
@@ -127,11 +140,11 @@ const ShoppingListing = () => {
         {/*  */}
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
           {
-            productList && productList.length > 0 ? productList.map((items) => <ShoppingProductTitle product={items} handleGetProductDetails={handleGetProductDetails} />) : null
+            productList && productList.length > 0 ? productList.map((items) => <ShoppingProductTitle product={items} handleAddToCart={handleAddToCart} handleGetProductDetails={handleGetProductDetails} />) : null
           }
         </div>
       </div>
-      <ProductDetailsDailog open={openDetailsDailog} setOpen={setOpenDetailsDailog} productDetails={productDetails}  />
+      <ProductDetailsDailog open={openDetailsDailog} setOpen={setOpenDetailsDailog} productDetails={productDetails} />
     </div>
   )
 }

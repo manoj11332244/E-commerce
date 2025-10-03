@@ -30,6 +30,7 @@ export const checkAuth=createAsyncThunk('/auth/check-auth',
     }
 )
 
+
 const authSlice = createSlice({
     name: "auth",
     initialState: {

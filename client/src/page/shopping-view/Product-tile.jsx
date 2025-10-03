@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { brandOptionsMap, categoryOptionsMap } from '../../../config/index'
 import React from 'react'
 
-const ShoppingProductTitle = ({ product,handleGetProductDetails }) => {
+const ShoppingProductTitle = ({ product,handleGetProductDetails,handleAddToCart }) => {
     // console.log(product)
     return (
         <Card className='w-full max-w-sm mx-auto'>
@@ -31,10 +31,11 @@ const ShoppingProductTitle = ({ product,handleGetProductDetails }) => {
                         }
                     </div>
                 </CardContent>
-                <CardFooter>
-                    <Button className='w-full'>Add to Cart</Button>
-                </CardFooter>
+               
             </div>
+             <CardFooter>
+                    <Button onClick={()=>handleAddToCart(product?._id)} className='w-full'>Add to Cart</Button>
+                </CardFooter>
         </Card>
     )
 }
