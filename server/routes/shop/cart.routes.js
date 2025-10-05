@@ -4,7 +4,7 @@ import {addToCart, deleteCart, fetchCartItem, updateCartItemQty} from '../../con
 const router=express.Router()
 
 router.post('/add',addToCart)
-router.get('/get/:usedId',fetchCartItem)
+router.get('/get/:userId',fetchCartItem)
 router.put('/update-cart',updateCartItemQty)
 router.delete('/:userId/:productId',deleteCart)
 

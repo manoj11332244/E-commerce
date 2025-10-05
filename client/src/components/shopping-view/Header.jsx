@@ -30,7 +30,7 @@ function MenuItems() {
 
 function HeaderRightContent() {
   const { user } = useSelector(state => state.auth)
-  const { cartItems } = useSelector((state) => state.shopCart)
+  const { cartitems } = useSelector((state) => state.shopCart)
   const [openCartSheet,setOpenCartSheet]=useState(false);
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -40,10 +40,10 @@ function HeaderRightContent() {
   }
 
 useEffect(()=>{
-  dispatch(fetchCartItem(user.id))
+  dispatch(fetchCartItem({userId:user.id}))
 },[dispatch])
   
-console.log("checking for",cartItems)
+// console.log("checking for",cartitems)
   // console.log(user)
   return <div className='flex lg:items-center lg:flex-row flex-col gap-4'>
     {/* user cart added by sheet */}
@@ -52,7 +52,7 @@ console.log("checking for",cartItems)
         <ShoppingCart className='h-12 w-12' />
         <span className='sr-only'>User cart</span>
       </Button>
-      <UserCartWrapper cartItems={cartItems && cartItems.items  && cartItems.items.length > 0 ? cartItems.items : []}/>
+      <UserCartWrapper cartitems={cartitems && cartitems.items  && cartitems.items.length > 0 ? cartitems.items : []}/>
     </Sheet>
     {/* user popup example your account type */}
     <DropdownMenu>
