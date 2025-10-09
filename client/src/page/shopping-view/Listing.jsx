@@ -10,6 +10,7 @@ import ShoppingProductTitle from './Product-tile'
 import { useSearchParams } from 'react-router-dom'
 import ProductDetailsDailog from '@/components/shopping-view/Product-Details'
 import { addToCart, fetchCartItem } from '@/store/shop/cartSlice'
+import { useToast } from '@/hooks/use-toast'
 
 const ShoppingListing = () => {
   const dispatch = useDispatch()
@@ -19,6 +20,7 @@ const ShoppingListing = () => {
   const [sort, setSort] = useState(null)
   const [searchParams, setSearchParams] = useSearchParams()
   const [openDetailsDailog, setOpenDetailsDailog] = useState(false)
+  const {toast}=useToast()
 
 
   // description of product by click popup
@@ -69,6 +71,9 @@ const ShoppingListing = () => {
       // console.log(data)
       if (data?.payload?.success) {
         dispatch(fetchCartItem({ userId: user?.id }))
+        toast({
+          title:"Product is added to cart"
+        })
       }
     })
   }

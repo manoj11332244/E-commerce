@@ -13,13 +13,14 @@ export const fetchCartItem=createAsyncThunk('cart/fetchCartItems',async({userId}
     return response.data;
 })
 
-export const deleteCartItem=createAsyncThunk('cart/deleteCartItem',async(userId,productId)=>{
+export const deleteCartItem=createAsyncThunk('cart/deleteCartItem',async({userId,productId})=>{
     const response=await axios.delete(`http://localhost:8000/api/shop/cart/${userId}/${productId}`)
     return response.data;
 })
 
-export const updateCartQuanity=createAsyncThunk('cart/update',async(userId,productId,quantity)=>{
+export const updateCartQuanity=createAsyncThunk('cart/update',async({userId,productId,quantity})=>{
     const response=await axios.put(`http://localhost:8000/api/shop/cart/update-cart`,{userId,productId,quantity})
+    // console.log(response.data)
     return response.data;
 })
 

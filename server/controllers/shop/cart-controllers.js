@@ -29,7 +29,7 @@ export const addToCart = async (req, res) => {
         if (findCurrentProductIndex === -1) {
             cart.items.push({ productId, quantity })
         } else {
-            cart.items[findCurrentProductIndex].quantity += quantity
+            cart.items[findCurrentProductIndex].quantity += parseInt(quantity)
         }
         await cart.save();
         return res.status(200).json({
@@ -72,13 +72,13 @@ export const fetchCartItem = async (req, res) => {
             await cart.save();
         }
 
-        const populateCartItems = validItems.map(items => ({
-            productId: items.productId._id,
-            image: items.productId.image,
-            title: items.productId.title,
-            price: items.productId.price,
-            salePrice: items.productId.salePrice,
-            quantity: items.productId.quantity
+        const populateCartItems = validItems.map(item => ({
+            productId: item.productId._id,
+            image: item.productId.image,
+            title: item.productId.title,
+            price: item.productId.price,
+            salePrice: item.productId.salePrice,
+            quantity: item.quantity
         }))
         res.status(200).json({
             success: true,
@@ -96,7 +96,7 @@ export const fetchCartItem = async (req, res) => {
 export const updateCartItemQty = async (req, res) => {
     try {
         const { userId, productId, quantity } = req.body;
-        if (!userId || !productId || !quantity <= 0) {
+        if (!userId || !productId || (!quantity < 0)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid data provided"
@@ -119,7 +119,7 @@ export const updateCartItemQty = async (req, res) => {
             })
         }
 
-        cart.items[findCurrentProductIndex].quantity = quantity
+        cart.items[findCurrentProductIndex].quantity = parseInt(quantity)
         await cart.save();
         await cart.populate({
             path: 'items.productId',
