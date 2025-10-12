@@ -22,7 +22,11 @@ const shoppingProductSlice = createSlice({
         productList: [],
         productDetails:null
     },
-    reducers: {},
+    reducers: {
+       setProductDetails:(state)=>{
+        state.productDetails=null
+       }
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchAllFilteredProduct.pending, (state) => {
             state.isLoading = true;
@@ -45,5 +49,5 @@ const shoppingProductSlice = createSlice({
     }
 })
 
-export const { productList, isLoading } = shoppingProductSlice.actions;
+export const { productList, isLoading,setProductDetails } = shoppingProductSlice.actions;
 export default shoppingProductSlice.reducer;
