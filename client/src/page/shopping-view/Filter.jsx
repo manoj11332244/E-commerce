@@ -13,13 +13,13 @@ const ProductFilter = ({filters,handleFilter}) => {
         </div>
         <div className='p-4 space-y-4'>
            {
-            Object.keys(filterOptions).map((items,index)=>{
-               return <Fragment key={index}>
+            Object.keys(filterOptions).map((items)=>{
+               return <Fragment key={items.id}>
                     <div>
                         <h3 className='text-base font-bold'>{items}</h3>
                         <div className='grid mt-2 gap-2'>
                             {
-                                filterOptions[items].map((option,_)=>{
+                                filterOptions[items].map((option)=>{
                                    return <Label className='flex items-center gap-2 font-medium'>
                                         <Checkbox checked={
                                             filters && Object.keys(filters).length > 0 &&

@@ -11,17 +11,31 @@ import { Avatar, AvatarFallback } from '../ui/avatar'
 import { logoutUser } from '@/store/auth-slice'
 import UserCartWrapper from './cart-wrapper'
 import { fetchCartItem } from '@/store/shop/cartSlice'
+import { Label } from '../ui/label'
 
 
 
 function MenuItems() {
+
+   const navigate=useNavigate()
+
+  function handleNavigate(getCurrentMenuItem){
+    sessionStorage.removeItem('filterData')
+    const currentFilter=getCurrentMenuItem.id!=='home' ?  
+    {
+      category : [getCurrentMenuItem.id]
+    } : null
+    sessionStorage.setItem('filterData',JSON.stringify(currentFilter))
+    navigate(getCurrentMenuItem.path)
+  }
+
   return <nav className='flex flex-col lg:flex-row mb-3 lg:mb-0 lg:items-center gap-6'>
     {
-      shoppingViewHeaderMenuItems.map((items, _) => {
+      shoppingViewHeaderMenuItems.map((items) => {
         return (
-          <Link className='font-medium text-sm' key={items.id} to={items.path}>
+          <Label onClick={()=>handleNavigate(items)} className='font-medium text-sm cursor-pointer' key={items.id} to={items.path}>
             {items.label}
-          </Link>
+          </Label>
         )
       })
     }
