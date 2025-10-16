@@ -9,4 +9,4 @@ const AddressSchema=new mongoose.Schema({
     notes: String
 },{timestamps:true})
 
-export const Address=mongoose.model('AddressSchema',Address)
+export const Address=mongoose.model('Address',AddressSchema)
